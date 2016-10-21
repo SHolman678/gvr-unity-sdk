@@ -272,8 +272,29 @@ public class GvrProfile {
     inverse = ApproximateInverse(new [] { 0.3f, 0 })
   };
 
-  /// Nexus 5 in a Cardboard v1.
-  public static readonly GvrProfile Default = new GvrProfile {
+    /// Parameters for the Seebright Ripple 2.
+    public static readonly Viewer SeebrightRipple2 = new Viewer
+    {
+        lenses = {
+      separation = 0.0536f,
+      offset = 0.05f,
+      screenDistance = 0.076f,
+      alignment = Lenses.AlignBottom,
+    },
+        maxFOV = {
+      outer = 38.29f,
+      inner = 38.29f,
+      upper = 38.29f,
+      lower = 38.29f
+    },
+        distortion = {
+      Coef = new [] { 0.0f, 0 },
+    },
+        inverse = ApproximateInverse(new[] { 0.0f, 0 })
+    };
+
+    /// Nexus 5 in a Cardboard v1.
+    public static readonly GvrProfile Default = new GvrProfile {
     screen = Nexus5,
     viewer = CardboardJun2014
   };
@@ -318,7 +339,10 @@ public class GvrProfile {
       case ViewerTypes.GoggleTechC1Glass:
         device = GoggleTechC1Glass;
         break;
-      default:
+            case ViewerTypes.SeebrightRipple2:
+                device = SeebrightRipple2;
+                break;
+            default:
         device = CardboardJun2014;
         break;
     }
