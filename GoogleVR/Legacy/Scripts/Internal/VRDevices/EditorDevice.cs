@@ -57,9 +57,18 @@ namespace Gvr.Internal {
     public override void UpdateState() {
       Quaternion rot;
       if (GvrViewer.Instance.UseUnityRemoteInput && RemoteCommunicating) {
-        var att = Input.gyro.attitude * initialRotation;
-        att = new Quaternion(att.x, att.y, -att.z, -att.w);
-        rot = Quaternion.Euler(90, 0, 0) * att;
+        if(GvrViewer.Instance.ViewerType == GvrProfile.ViewerTypes.SeebrightRipple2)
+                {
+                    var att = Quaternion.Euler(-90, 0, 90) * Input.gyro.attitude;
+                    Vector3 rotation = att.eulerAngles;
+                    rot = Quaternion.Euler(-rotation.x, -rotation.y, rotation.z);
+                }
+                else
+                {
+                    var att = Input.gyro.attitude * initialRotation;
+                    att = new Quaternion(att.x, att.y, -att.z, -att.w);
+                    rot = Quaternion.Euler(90, 0, 0) * att;
+                }
       } else {
         bool rolled = false;
         if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) {
@@ -83,7 +92,11 @@ namespace Gvr.Internal {
         rot = Quaternion.Euler(mouseY, mouseX, mouseZ);
       }
       var neck = (rot * neckOffset - neckOffset.y * Vector3.up) * GvrViewer.Instance.NeckModelScale;
-      headPose.Set(neck, rot);
+      if (GvrViewer.Instance.ViewerType == GvrProfile.ViewerTypes.SeebrightRipple2)
+            {
+                neck += new Vector3(0, -0.06359f, -0.07271f);
+            }
+        headPose.Set(neck, rot);
 
       tilted = Input.GetKeyUp(KeyCode.Escape);
     }

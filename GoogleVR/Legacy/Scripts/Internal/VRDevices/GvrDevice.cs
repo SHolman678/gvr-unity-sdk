@@ -64,6 +64,7 @@ namespace Gvr.Internal {
       ProcessEvents();
       GetHeadPose(headData);
       ExtractMatrix(ref headView, headData);
+      headView = headView * Matrix4x4.TRS(new Vector3(0, -0.06359f, -0.07271f), Quaternion.Euler(5.04f, 0, 0), Vector3.one).inverse;
       headPose.SetRightHanded(headView.inverse);
     }
 
